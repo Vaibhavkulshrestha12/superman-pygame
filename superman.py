@@ -79,6 +79,7 @@ frame_counter = 0
 START_SCREEN = 0
 PLAYING = 1
 GAME_OVER = 2
+PAUSED = 3
 current_state = START_SCREEN
 
 pygame.mixer.music.play(-1)
@@ -99,6 +100,11 @@ while True:
                 pipes.empty()
                 score = 0
                 current_state = PLAYING
+            elif event.key == pygame.K_p:
+                if current_state == PLAYING:
+                    current_state = PAUSED
+                elif current_state == PAUSED:
+                    current_state = PLAYING
 
     if current_state == PLAYING:
         superman.update()
@@ -149,7 +155,9 @@ while True:
     elif current_state == GAME_OVER:
         game_over_text = font.render("Game Over! Press SPACE to play again", True, (255, 255, 255))
         screen.blit(game_over_text, (SCREEN_WIDTH // 4, SCREEN_HEIGHT // 2))
+    elif current_state == PAUSED:
+        paused_text = font.render("Paused. Press P to resume.", True, (255, 255, 255))
+        screen.blit(paused_text, (SCREEN_WIDTH // 4, SCREEN_HEIGHT // 2))
 
     pygame.display.flip()
     clock.tick(FPS)
-
